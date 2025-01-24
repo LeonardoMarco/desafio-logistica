@@ -20,6 +20,6 @@ from core.views import FileProcessor, GetOrders
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('file-processor/', FileProcessor.as_view(), name='processor-file'),
-    path('get-orders/', GetOrders.as_view(), name='get-orders')
+    path('file-processor/', FileProcessor.as_view(), name='processor_file'),
+    path('get-orders/', GetOrders.as_view(), name='get_orders')
 ]
