@@ -60,6 +60,9 @@ class GetOrders(APIView):
 
         clients = Client.objects.filter(**filters_client)
 
+        if not clients:
+            return Response({'message': 'not found Order'}, status=status.HTTP_404_NOT_FOUND)
+
         data = [
             {
                 "user_id": client.id,

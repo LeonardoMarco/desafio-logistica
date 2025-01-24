@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -82,13 +84,22 @@ TEMPLATES = [
 WSGI_APPLICATION = 'desafio_logistica.wsgi.application'
 
 
+DB_DEFAULT_NAME = config('DB_DEFAULT_NAME', default='')
+DB_DEFAULT_USER = config('DB_DEFAULT_USER', default='')
+DB_DEFAULT_HOST = config('DB_DEFAULT_HOST', default='')
+DB_DEFAULT_PASSWORD = config('DB_DEFAULT_PASSWORD', default='')
+DB_DEFAULT_PORT = config('DB_DEFAULT_PORT', default=0, cast=int)
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': DB_DEFAULT_NAME,
+        'USER': DB_DEFAULT_USER,
+        'PASSWORD': DB_DEFAULT_PASSWORD,
+        'HOST': DB_DEFAULT_HOST,
+        'PORT': DB_DEFAULT_PORT,
     }
 }
 
@@ -134,7 +145,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = config('CELERY_BROKER_URL')
 CELERY_TASK_SERIALIZER = 'pickle'
 CELERY_RESULT_SERIALIZER = 'pickle'
 CELERY_ACCEPT_CONTENT = ['json', 'pickle']

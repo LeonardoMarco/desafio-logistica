@@ -1,0 +1,109 @@
+version: '3.9'
+
+services:
+  mysql:
+      image: mysql:8.0
+      container_name: mysql
+      restart: always
+      environment:
+        MYSQL_DATABASE: desafio_logistica
+        MYSQL_ROOT_PASSWORD: password
+      ports:
+        - "3306:3306"
+      volumes:
+        - mysql_data:/var/lib/mysql
+      healthcheck:
+        test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$MYSQL_ROOT_PASSWORD || exit 1"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+  redis:
+    image: redis:7.0
+    container_name: redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+  django_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: django_app
+    command: >
+      sh -c "
+        python manage.py migrate &&
+        python manage.py runserver 0.0.0.0:8000
+      "
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=1
+      - DB_DEFAULT_NAME=desafio_logistica
+      - DB_DEFAULT_USER=root
+      - DB_DEFAULT_PASSWORD=password
+      - DB_DEFAULT_HOST=mysql
+      - DB_DEFAULT_PORT=3306
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - DJANGO_SETTINGS_MODULE=desafio_logistica.settings
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: celery_worker
+    command: celery -A desafio_logistica worker --loglevel=info
+    volumes:
+      - .:/app
+    environment:
+      - DB_DEFAULT_NAME=desafio_logistica
+      - DB_DEFAULT_USER=root
+      - DB_DEFAULT_PASSWORD=password
+      - DB_DEFAULT_HOST=mysql
+      - DB_DEFAULT_PORT=3306
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - DJANGO_SETTINGS_MODULE=desafio_logistica.settings
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+  django_test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: django_test
+    command: >
+      sh -c "
+        python manage.py migrate &&
+        python manage.py test
+      "
+    volumes:
+      - .:/app
+    ports:
+      - "8001:8001"
+    environment:
+      - DEBUG=1
+      - DB_DEFAULT_NAME=desafio_logistica
+      - DB_DEFAULT_USER=root
+      - DB_DEFAULT_PASSWORD=password
+      - DB_DEFAULT_HOST=mysql
+      - DB_DEFAULT_PORT=3306
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - DJANGO_SETTINGS_MODULE=desafio_logistica.settings
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+volumes:
+  mysql_data:

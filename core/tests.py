@@ -72,5 +72,4 @@ class GetOrdersTest(APITestCase):
 
     def test_get_orders_with_no_results(self):
         response = self.client.get(self.url, {"start_date": "2025-02-01", "end_date": "2025-02-25"})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data["results"]), 0)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

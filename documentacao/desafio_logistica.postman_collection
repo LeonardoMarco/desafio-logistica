@@ -1,0 +1,66 @@
+{
+	"info": {
+		"_postman_id": "0d89c769-7528-488e-b295-ea10243c6b1d",
+		"name": "Desafio logistica",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36003868"
+	},
+	"item": [
+		{
+			"name": "1 - Processor file",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/LEONARDO MARCO/Downloads/data_1.txt"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/file-processor/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"file-processor",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2 - Get orders",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/get-orders/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"get-orders",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
