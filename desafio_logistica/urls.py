@@ -16,9 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from core.views import FileProcessor
+from core.views import FileProcessor, GetOrders
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('file-processor/', FileProcessor.as_view(), name='processor-file')
+    path('file-processor/', FileProcessor.as_view(), name='processor-file'),
+    path('get-orders/', GetOrders.as_view(), name='get-orders')
 ]
