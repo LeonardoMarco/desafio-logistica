@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework import status
+from .pagination import CustomPagination
 
 from .models import Client
 from .tasks import proccess_file_async
@@ -82,4 +83,7 @@ class GetOrders(APIView):
             for client in clients
         ]
 
-        return Response(data, status=status.HTTP_200_OK)
+        paginator = CustomPagination()
+        paginated_data = paginator.paginate_queryset(data, request)
+
+        return paginator.get_paginated_response(paginated_data)
