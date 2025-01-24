@@ -13,7 +13,7 @@ Esse projeto consiste em uma API Rest para processar e normalizar dados recebido
 - Celery
     - A escolha do Celery foi pela praticidade em trabalhar com funções assincronas, que foi o caso do processamento de arquivo que é enviado em um endpoint específico, possibilitando uma resposta rápida na requisição e processando o arquivo em segundo plano.
 - Redis
-    - O redis foi escolhido para auxiliar o celery em suas funções assincronas.
+    - O redis foi escolhido para auxiliar o celery em suas funções assincronas e salvar dados cacheados para uma consulta de dados mais performática.
 - MySQL
     - Para o desafio o MySQL foi escolhido por ser um database mais leve e mais rápido em leitura simples, porém em um projeto real, o PostgreSQL seria também uma ótima escolha.
 
@@ -140,13 +140,12 @@ Exemplos:
 
 ```/get-orders/?order_id=1 > trás a order específica```
 
-```/get-orders/?start_date > trás as orders maior ou igual a data passada```
+```/get-orders/?start_date=2021-01-01 > trás as orders maior ou igual a data passada```
 
-```/get-orders/?start_date > trás as orders menor ou igual a data passada```
+```/get-orders/?end_date=2021-02-01 > trás as orders menor ou igual a data passada```
 
 todos os paramêtros da URL podem ser combinados.
 
-Um outro ponto dessa URL é que utilizamos paginação, pois é uma rota onde trazer muitos dados, e dependendo da quantidade, caso não tiver uma paginação, pode ocorrer um erro pelo tamanho do response.
 
 ### Modelagem do banco de dados
 ![modelagem](documentacao/modelagem.png)
@@ -159,5 +158,4 @@ Pensando em um projeto real, poderiamos melhorar algumas questões que foram fei
 
 - Substituição de print por logs
 - Notificar o projeto responsável pela request pelos erros de processamento dos arquivos (algum webhook ou coisa nesse sentido)
-- Cachear a rota get-orders
 - Autenticação nas rotas

@@ -2,9 +2,11 @@ from datetime import datetime
 
 from celery import shared_task
 from django.db import IntegrityError
+from django.core.cache import cache
 
-from .utils import extract_data_from_line
+from .utils import extract_data_from_line, set_orders_cache
 from .models import Client, Order, Product, ProductOrder
+
 
 
 @shared_task
@@ -52,4 +54,9 @@ def proccess_file_async(uploaded_file):
             errors += 1
         except Exception as e:
             return f'error: {e}'
+
+    set_orders_cache()
+
+    print("cache updated")
+
     return f'File processed successfully. Success: {line_successfully}, errors: {errors}'
