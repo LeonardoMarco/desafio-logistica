@@ -48,22 +48,22 @@ class GetOrdersTest(APITestCase):
     def test_get_orders_with_no_filters(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-        self.assertEqual(len(response.data[0]["orders"]), 2)
+        self.assertEqual(len(response.data["results"]), 1)
+        self.assertEqual(len(response.data["results"][0]["orders"]), 2)
 
     def test_get_orders_with_order_id_filter(self):
         response = self.client.get(self.url, {"order_id": 1})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-        self.assertEqual(len(response.data[0]["orders"]), 1)
-        self.assertEqual(response.data[0]["orders"][0]["order_id"], 1)
+        self.assertEqual(len(response.data["results"]), 1)
+        self.assertEqual(len(response.data["results"][0]["orders"]), 1)
+        self.assertEqual(response.data["results"][0]["orders"][0]["order_id"], 1)
 
     def test_get_orders_with_date_filters(self):
         response = self.client.get(self.url, {"start_date": "2024-01-01", "end_date": "2024-01-03"})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-        self.assertEqual(len(response.data[0]["orders"]), 1)
-        self.assertEqual(response.data[0]["orders"][0]["order_id"], 1)
+        self.assertEqual(len(response.data["results"]), 1)
+        self.assertEqual(len(response.data["results"][0]["orders"]), 1)
+        self.assertEqual(response.data["results"][0]["orders"][0]["order_id"], 1)
 
     def test_get_orders_with_invalid_date(self):
         response = self.client.get(self.url, {"start_date": "invalid-date"})
@@ -73,4 +73,4 @@ class GetOrdersTest(APITestCase):
     def test_get_orders_with_no_results(self):
         response = self.client.get(self.url, {"start_date": "2025-02-01", "end_date": "2025-02-25"})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 0)
+        self.assertEqual(len(response.data["results"]), 0)
