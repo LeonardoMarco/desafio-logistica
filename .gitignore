@@ -1,0 +1,54 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.pdb
+*.log
+*.pot
+*.py[cod]
+*.so
+
+# Django
+*.log
+*.sqlite3
+/db.sqlite3
+/migrations/*.pyc
+/migrations/*.pyo
+/migrations/__init__.py
+
+# PyCharm
+.idea/
+
+# VSCode
+.vscode/
+
+# Distribuições e builds
+*.egg
+*.egg-info
+dist/
+build/
+eggs/
+MANIFEST
+*.bak
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Teste de cobertura
+.coverage
+coverage.xml
+*.cover
+
+# Banco de dados
+*.sqlite3
+
+# Ambiente virtual
+venv/
+.env/
+.env.*
+*/.env
+
+# Folders do sistema operacional
+.DS_Store
+Thumbs.db
