@@ -7,7 +7,7 @@ Esse projeto consiste em uma API Rest para processar e normalizar dados recebido
 ## Tecnologias utilizadas
 
 - Python
-   - O python foi escolhido 
+   - O Python foi escolhido como linguagem principal devido à sua facilidade de uso e normalização de dados mas também a sua sintaxe clara.
 - Django
     - A escolha do Django foi pela gama de facilidades para realizar o que se pede no desafio, o Django por si só já tem várias funcionalidades prontas, como o Django ORM, Django test, e aliado ao Django REST framework, conseguimos construir API'S de forma fácil e rápida.
 - Celery
@@ -125,14 +125,14 @@ Estrutura do projeto
 Para processar os arquivos, temos a rota:
 
 
-/file-processor/ - É uma rota onde a resposta da requisição é imediata, e o processamento do arquivo em si, fica em segundo plano, se passado pelas validações.
+<b>POST /file-processor/ </b> - É uma rota onde a resposta da requisição é imediata, e o processamento do arquivo em si, fica em segundo plano, se passado pelas validações.
 
 É uma rota que aceita o envio apenas de um arquivo, e arquivos txt.
 
 
 Para a consulta dos dados normalizados temos a rota
 
-/get-orders/ - É uma rota onde pode retornar todos os dados do banco, ou filtrados de acordo com o que é passado na URL.
+<b>GET /get-orders/</b> - É uma rota onde pode retornar todos os dados do banco, ou filtrados de acordo com o que é passado na URL.
 
 Exemplos:
 
@@ -146,6 +146,8 @@ Exemplos:
 
 todos os paramêtros da URL podem ser combinados.
 
+A ideia é que essa rota seja performática, e para isso utilizamos o redis como cachamento das informações para que o retorno da requisição seja rápido.
+
 
 ### Modelagem do banco de dados
 ![modelagem](documentacao/modelagem.png)
@@ -157,5 +159,5 @@ todos os paramêtros da URL podem ser combinados.
 Pensando em um projeto real, poderiamos melhorar algumas questões que foram feitas no desafio.
 
 - Substituição de print por logs
-- Notificar o projeto responsável pela request pelos erros de processamento dos arquivos (algum webhook ou coisa nesse sentido)
+- Notificar o projeto responsável pela request pelos erros de processamento dos arquivos (algum webhook ou algo nesse sentido)
 - Autenticação nas rotas
